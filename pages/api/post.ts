@@ -1,50 +1,61 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from 'next'
-import * as fs from 'fs'
-import * as path from 'path'
+import type { NextApiRequest, NextApiResponse } from "next";
+import * as fs from "fs";
+import * as path from "path";
+import PostType from "@/types/post.type";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-	interface FileData {
-		name: string
-		contents: string
-		category: string[] | null
-	}
+  if (req.method !== "GET") return res.status(405).send("Method Not Allowed");
 
-	if (req.method !== 'GET') return res.status(405).send('Method Not Allowed')
+  function readFiles(directory: string): Promise<PostType[]> {
+    return new Promise((resolve, reject) => {
+      fs.readdir(directory, (err, files) => {
+        if (err) return reject(err);
 
-	function readFiles(directory: string): Promise<FileData[]> {
-		return new Promise((resolve, reject) => {
-			fs.readdir(directory, (err, files) => {
-				if (err) return reject(err)
+        const fileDataArray: PostType[] = [];
 
-				const fileDataArray: FileData[] = []
+        files.forEach((file) => {
+          const filePath = path.join(directory, file);
+          const fileContent = fs.readFileSync(filePath, "utf8");
 
-				files.forEach((file) => {
-					const filePath = path.join(directory, file)
-					const contents = fs.readFileSync(filePath, 'utf8')
+          const { name, image, category, contents } = {
+            name: file.replace(".md", ""),
+            image: fileContent.substring(fileContent.indexOf("(") + 1, fileContent.indexOf(")")),
+            category:
+              fileContent[0] !== "["
+                ? null
+                : fileContent.substring(fileContent.indexOf("[") + 1, fileContent.indexOf("]")).split(", "),
+            contents: fileContent.replace(
+              `[${
+                fileContent[0] !== "["
+                  ? null
+                  : fileContent.substring(fileContent.indexOf("[") + 1, fileContent.indexOf("]"))
+              }]\n(${fileContent.substring(fileContent.indexOf("(") + 1, fileContent.indexOf(")"))})\n\n`,
+              "",
+            ),
+          };
 
-					const category = contents[0] !== '[' ? null : contents.substring(contents.indexOf('[') + 1, contents.indexOf(']'))
+          const fileData: PostType = {
+            name,
+            image,
+            category,
+            contents,
+          };
+          fileDataArray.push(fileData);
+        });
 
-					const fileData: FileData = {
-						name: file.replace('.md', ''),
-						contents: contents.replace(`[${category}]\n\n`, ''),
-						category: contents[0] !== '[' ? null : !!category ? category.split(', ') : null,
-					}
-					fileDataArray.push(fileData)
-				})
+        resolve(fileDataArray);
+      });
+    });
+  }
 
-				resolve(fileDataArray)
-			})
-		})
-	}
+  const directoryPath = "contents";
 
-	const directoryPath = 'contents'
-
-	readFiles(directoryPath)
-		.then((fileDataArray) => {
-			res.status(200).json(fileDataArray)
-		})
-		.catch((err) => {
-			res.status(500).send(err)
-		})
+  readFiles(directoryPath)
+    .then((fileDataArray) => {
+      res.status(200).json(fileDataArray);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
 }
