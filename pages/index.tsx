@@ -1,14 +1,28 @@
-import axios from 'axios'
-import React from 'react'
+import HomeLayout from "@/layouts/HomeLayout";
+import HomePropsType from "@/types/home.props.type";
+import axios from "axios";
+import { GetServerSideProps } from "next";
+import React from "react";
 
-const Home = () => {
-	React.useEffect(() => {
-		axios.get('api/category').then((r) => {
-			console.log(r)
-		})
-	})
+const Home = (props: HomePropsType) => {
+  return <HomeLayout {...props} />;
+};
 
-	return <div>h1</div>
-}
+const getApiDocs = async (path: string) => {
+  try {
+    return (await axios.get(`api/${path}`)).data;
+  } catch (err) {
+    return false;
+  }
+};
 
-export default Home
+export const getServerSideProps: GetServerSideProps<HomePropsType> = async () => {
+  const categories = ["All", ...(await getApiDocs("category"))];
+  const posts = await getApiDocs("post");
+
+  if (!categories || !posts) return { notFound: true };
+
+  return { props: { categories, posts } };
+};
+
+export default Home;
