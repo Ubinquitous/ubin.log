@@ -2,9 +2,9 @@ import React from "react";
 import * as S from "./PostLayout.style";
 import PostType from "@/types/post.type";
 import dateParser from "@/utils/dateParser";
+import { Viewer } from "@/components/Viewer";
 
 const PostLayout = ({ name, image, contents, category, date }: PostType) => {
-  console.log(contents);
   return (
     <S.PostLayout>
       <S.PostContainer>
@@ -20,7 +20,9 @@ const PostLayout = ({ name, image, contents, category, date }: PostType) => {
             ))}
           </S.PostTitleContainerCategoryBox>
           <S.PostTitleContainerImage src={image} alt="" width={1000} height={1000} />
-          <S.PostTitleContainerContents></S.PostTitleContainerContents>
+          <S.PostTitleContainerContents>
+            <Viewer source={contents} />
+          </S.PostTitleContainerContents>
         </S.PostTitleContainer>
       </S.PostContainer>
     </S.PostLayout>

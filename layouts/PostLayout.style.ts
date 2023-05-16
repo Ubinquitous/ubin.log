@@ -12,9 +12,9 @@ export const PostLayout = styled.div`
 export const PostContainer = styled.div`
   margin-top: 18vh;
   width: 56vw;
-  height: 100vh;
   display: flex;
   flex-direction: column;
+  margin-bottom: 14vh;
 `;
 
 export const PostTitleContainer = styled.div`
