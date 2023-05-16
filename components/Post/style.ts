@@ -23,11 +23,11 @@ export const PostCategoryBox = styled.div`
 
 export const PostCategory = styled.div`
   padding: 3px 12px 3px 12px;
-  background-color: #f2fdfd;
-  border-radius: 4px;
+  background-color: #f8f9fa;
+  border-radius: 999px;
   font-size: 12px;
-  font-weight: 600;
-  color: rgba(0, 0, 0, 0.6);
+  font-weight: 500;
+  color: #00d8d8;
 `;
 
 export const PostCardTitle = styled.div`
@@ -39,4 +39,8 @@ export const PostCardSubtitle = styled.div`
   font-size: 14px;
   font-weight: 500;
   color: rgba(0, 0, 0, 0.4);
+`;
+
+export const PostCardDate = styled(PostCardSubtitle)`
+  margin-top: -4px;
 `;
