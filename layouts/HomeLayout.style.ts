@@ -44,7 +44,7 @@ export const HomeContainerCategoryBox = styled.div`
   display: flex;
   width: 100%;
   padding: 0 0 10px 6px;
-  gap: 20px;
+  gap: 30px;
   border-bottom: 3px solid #f2f3f7;
 `;
 
