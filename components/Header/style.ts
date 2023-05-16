@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
 
@@ -25,14 +26,24 @@ export const HeaderTitleText = styled(Link)`
   text-decoration: none;
 `;
 
-export const HeaderNavContainer = styled.div`
+export const HeaderSearchContainer = styled.div`
+  width: 210px;
+  height: 30px;
+  border-bottom: 2px solid #ccc;
   display: flex;
-  gap: 40px;
+  justify-content: center;
+  align-items: center;
 `;
 
-export const HeaderNavText = styled.a`
-  font-size: 16px;
-  font-weight: 500;
-  color: black;
-  text-decoration: none;
+export const HeaderSearchInput = styled.input`
+  width: 180px;
+  height: 100%;
+  outline: none;
+  background-color: transparent;
+  border: none;
+`;
+
+export const HeaderSearchButton = styled(Image)`
+  width: 16px;
+  height: 16px;
 `;
