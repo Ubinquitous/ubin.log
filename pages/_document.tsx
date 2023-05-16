@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Html, Head, Main, NextScript } from "next/document";
 
-axios.defaults.baseURL = "http://localhost:3000";
+axios.defaults.baseURL = "https://ubin-log.vercel.app/";
 
 export default function Document() {
   return (
