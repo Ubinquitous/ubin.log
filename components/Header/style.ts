@@ -26,7 +26,7 @@ export const HeaderTitleText = styled(Link)`
   text-decoration: none;
 `;
 
-export const HeaderSearchContainer = styled.div`
+export const HeaderSearchContainer = styled.form`
   width: 210px;
   height: 30px;
   border-bottom: 2px solid #ccc;
