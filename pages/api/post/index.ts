@@ -26,15 +26,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 ? null
                 : fileContent.substring(fileContent.indexOf("[") + 1, fileContent.indexOf("]")).split(", "),
             date: fileContent.substring(fileContent.indexOf("{") + 1, fileContent.indexOf("}")),
-            contents: fileContent.replace(
-              `[${
-                fileContent[0] !== "["
-                  ? null
-                  : fileContent.substring(fileContent.indexOf("[") + 1, fileContent.indexOf("]"))
-              }]\n(${fileContent.substring(fileContent.indexOf("(") + 1, fileContent.indexOf(")"))})\n
-              {${fileContent.substring(fileContent.indexOf("{") + 1, fileContent.indexOf("}"))}}\n\n`,
-              "",
-            ),
+            contents: fileContent
+              .replace(fileContent.substring(fileContent.indexOf("["), fileContent.indexOf("}") + 1), "")
+              .replace(/#/gi, ""),
           };
 
           const fileData: PostType = {
