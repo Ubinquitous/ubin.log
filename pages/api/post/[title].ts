@@ -21,9 +21,10 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<PostTy
             ? null
             : fileContent.substring(fileContent.indexOf("[") + 1, fileContent.indexOf("]")).split(", "),
         date: parseInt(fileContent.substring(fileContent.indexOf("{") + 1, fileContent.indexOf("}"))),
-        contents: fileContent
-          .replace(fileContent.substring(fileContent.indexOf("["), fileContent.indexOf("}") + 1), "")
-          .replace(/#/gi, ""),
+        contents: fileContent.replace(
+          fileContent.substring(fileContent.indexOf("["), fileContent.indexOf("}") + 1),
+          "",
+        ),
       };
 
       res.json(response);
