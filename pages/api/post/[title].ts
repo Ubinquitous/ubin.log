@@ -21,17 +21,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<PostTy
             ? null
             : fileContent.substring(fileContent.indexOf("[") + 1, fileContent.indexOf("]")).split(", "),
         date: parseInt(fileContent.substring(fileContent.indexOf("{") + 1, fileContent.indexOf("}"))),
-        contents: fileContent.replace(
-          `[${
-            fileContent[0] !== "["
-              ? null
-              : fileContent.substring(fileContent.indexOf("[") + 1, fileContent.indexOf("]"))
-          }]\n(${fileContent.substring(
-            fileContent.indexOf("(") + 1,
-            fileContent.indexOf(")"),
-          )})\n{${fileContent.substring(fileContent.indexOf("{") + 1, fileContent.indexOf("}"))}}\n\n`,
-          "",
-        ),
+        contents: fileContent
+          .replace(fileContent.substring(fileContent.indexOf("["), fileContent.indexOf("}") + 1), "")
+          .replace(/#/gi, ""),
       };
 
       res.json(response);
