@@ -15,7 +15,11 @@ const Header = () => {
       <S.HeaderContainer>
         <S.HeaderTitleText href="/">ubin.log</S.HeaderTitleText>
         <S.HeaderSearchContainer>
-          <S.HeaderSearchInput type="text" value={search} onChange={(e) => setSearch(e.target.value)} />
+          <S.HeaderSearchInput
+            type="text"
+            value={search}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
+          />
           <S.HeaderSearchButton onClick={() => onNavigateResultPage(search)} src={Search} alt="" />
         </S.HeaderSearchContainer>
       </S.HeaderContainer>
