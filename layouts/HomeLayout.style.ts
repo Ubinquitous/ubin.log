@@ -43,12 +43,14 @@ export const HomeContainer = styled.div`
 export const HomeContainerCategoryBox = styled.div`
   display: flex;
   width: 100%;
+  flex-wrap: wrap;
   padding: 0 0 10px 6px;
   gap: 30px;
+  line-height: 50%;
   border-bottom: 3px solid #f2f3f7;
 `;
 
-export const HomeContainerCategory = styled.span<{ current: string }>`
+export const HomeContainerCategory = styled.div<{ current: string }>`
   font-size: 16px;
   font-weight: 700;
   color: ${({ current }) => (current === "true" ? "black" : "gray")};

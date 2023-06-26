@@ -1,6 +1,6 @@
-const dateParser = (date: number) => {
+const dateParser = (date: string) => {
   const strdate = JSON.stringify(date);
-  const parseDate = `${strdate.substring(0, 4)}년 ${strdate.substring(4, 6)}월 ${strdate.substring(6, 8)}일`;
+  const parseDate = `${strdate.substring(1, 5)}년 ${strdate.substring(6, 8)}월 ${strdate.substring(9, 11)}일`;
 
   return parseDate;
 };

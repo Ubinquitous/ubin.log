@@ -22,20 +22,26 @@ const HomeLayout = ({ categories, posts }: HomePropsType) => {
       </S.HomeBackgroundMain>
       <S.HomeContainer>
         <S.HomeContainerCategoryBox>
-          {categories.map((category) => (
+          <S.HomeContainerCategory
+            onClick={() => onChangeCurrentCategory("All")}
+            current={currentCategory === "All" ? "true" : "false"}
+          >
+            All
+          </S.HomeContainerCategory>
+          {categories.data.userTags.tags.map((category) => (
             <S.HomeContainerCategory
-              key={category}
-              onClick={() => onChangeCurrentCategory(category)}
-              current={category === currentCategory ? "true" : "false"}
+              key={category.id}
+              onClick={() => onChangeCurrentCategory(category.name)}
+              current={currentCategory === category.name ? "true" : "false"}
             >
-              {category}
+              {category.name}
             </S.HomeContainerCategory>
           ))}
         </S.HomeContainerCategoryBox>
         <S.HomeContainerPostContainer>
-          {posts.map((post) => {
-            if (currentCategory === "All" || post.category?.includes(currentCategory))
-              return <Post key={post.name} {...post} />;
+          {posts.data.posts.map((post) => {
+            if (currentCategory === "All" || post.tags?.includes(currentCategory))
+              return <Post key={post.id} {...post} />;
           })}
         </S.HomeContainerPostContainer>
       </S.HomeContainer>

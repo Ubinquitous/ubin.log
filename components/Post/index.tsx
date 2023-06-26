@@ -4,7 +4,7 @@ import PostType from "@/types/post.type";
 import { useRouter } from "next/router";
 import dateParser from "@/utils/dateParser";
 
-const Post = ({ image, category, name, contents, date }: PostType) => {
+const Post = (post: PostType) => {
   const router = useRouter();
 
   const onNavigateDetailPage = (postname: string) => {
@@ -12,16 +12,16 @@ const Post = ({ image, category, name, contents, date }: PostType) => {
   };
 
   return (
-    <S.PostCard onClick={() => onNavigateDetailPage(name)}>
-      <S.PostCardImage src={image} alt="" width={1000} height={1000} />
+    <S.PostCard onClick={() => onNavigateDetailPage(post.title)}>
+      <S.PostCardImage src={post.thumbnail} alt="" width={1000} height={1000} />
       <S.PostCategoryBox>
-        {category?.map((ct) => (
-          <S.PostCategory key={ct}>{ct}</S.PostCategory>
+        {post.tags?.map((tag) => (
+          <S.PostCategory key={tag}>{tag}</S.PostCategory>
         ))}
       </S.PostCategoryBox>
-      <S.PostCardTitle>{name}</S.PostCardTitle>
-      <S.PostCardDate>{dateParser(date)}</S.PostCardDate>
-      <S.PostCardSubtitle>{contents.length > 40 ? `${contents.slice(0, 40)}...` : contents}</S.PostCardSubtitle>
+      <S.PostCardTitle>{post.title}</S.PostCardTitle>
+      <S.PostCardDate>{dateParser(post.released_at)}</S.PostCardDate>
+      <S.PostCardSubtitle>{post.short_description}</S.PostCardSubtitle>
     </S.PostCard>
   );
 };
