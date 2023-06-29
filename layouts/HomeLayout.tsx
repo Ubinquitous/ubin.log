@@ -2,12 +2,41 @@ import React from "react";
 import * as S from "./HomeLayout.style";
 import HomePropsType from "@/types/home.props.type";
 import Post from "@/components/Post";
+import { child, getDatabase, onValue, push, ref, update } from "firebase/database";
 
 const HomeLayout = ({ categories, posts }: HomePropsType) => {
   const [currentCategory, setCurrentCategory] = React.useState("All");
+  const [contents, setContents] = React.useState("");
+  const [comments, setComments] = React.useState([{ key: "", comments: "" }]);
 
   const onChangeCurrentCategory = (category: string) => {
     setCurrentCategory(category);
+  };
+
+  React.useEffect(() => {
+    const db = getDatabase();
+    const comments = ref(db, "comments/");
+    onValue(comments, (snapshot) => {
+      const data = snapshot.val();
+      const cmts = Object.entries(data)
+        .map((x) => x[1])
+        .reverse();
+      setComments(cmts as any);
+      setContents("");
+    });
+  }, []);
+
+  const onCreatePost = () => {
+    const db = getDatabase();
+    const newPostKey = push(child(ref(db), "comments")).key;
+    const updates: { [key: string]: any } = {};
+
+    updates["comments/" + newPostKey] = {
+      key: newPostKey,
+      comments: contents,
+    };
+
+    update(ref(db), updates);
   };
 
   return (
@@ -44,6 +73,20 @@ const HomeLayout = ({ categories, posts }: HomePropsType) => {
               return <Post key={post.id} {...post} />;
           })}
         </S.HomeContainerPostContainer>
+        <S.HomeContainerCommentContainer>
+          <S.HomeContainerCommentTitle>댓글 쓰기</S.HomeContainerCommentTitle>
+          <S.HomeContainerCommentTextArea onChange={(e) => setContents(e.target.value)} value={contents} />
+          <S.HomeContainerCommentButton onClick={onCreatePost}>등록</S.HomeContainerCommentButton>
+          <S.HomeContainerCommentTitle>댓글 목록</S.HomeContainerCommentTitle>
+          {comments.map((k, index) => {
+            return (
+              <S.HomeContainerCommentBox key={k.key}>
+                <S.HomeContainerCommentIndex>{String(index + 1).padStart(2, "0")}</S.HomeContainerCommentIndex>
+                <S.HomeContainerComment>{k.comments}</S.HomeContainerComment>
+              </S.HomeContainerCommentBox>
+            );
+          })}
+        </S.HomeContainerCommentContainer>
       </S.HomeContainer>
     </S.HomeLayout>
   );
